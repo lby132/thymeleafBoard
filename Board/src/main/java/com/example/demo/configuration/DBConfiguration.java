@@ -1,4 +1,4 @@
-package configuration;
+package com.example.demo.configuration;
 
 import javax.sql.DataSource;
 
@@ -21,28 +21,37 @@ public class DBConfiguration {
 
 	@Autowired
 	private ApplicationContext applicationContext;
-	
+
 	@Bean
-	@ConfigurationProperties(prefix = "spring.datasource.hikari")
+	@ConfigurationProperties(prefix = "spring.datasource")
 	public HikariConfig hikariConfig() {
 		return new HikariConfig();
 	}
-	
+
 	@Bean
 	public DataSource dataSource() {
 		return new HikariDataSource(hikariConfig());
 	}
-	
+
 	@Bean
 	public SqlSessionFactory sqlSessionFactory() throws Exception {
 		SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
 		factoryBean.setDataSource(dataSource());
-		//factoryBean.setMapperLocations(applicationContext.getResources(""));
+		factoryBean.setMapperLocations(applicationContext.getResources("classpath:/mappers/**/*Mapper.xml"));
+		factoryBean.setTypeAliasesPackage("com.example.demo.domain");
+		factoryBean.setConfiguration(mybatisConfg());
 		return factoryBean.getObject();
 	}
-	
+
 	@Bean
 	public SqlSessionTemplate sqlSession() throws Exception {
 		return new SqlSessionTemplate(sqlSessionFactory());
 	}
+	
+	@Bean
+	@ConfigurationProperties(prefix = "mybatis.configuration")
+	public org.apache.ibatis.session.Configuration mybatisConfg() {
+		return new org.apache.ibatis.session.Configuration();
+	}
+
 }
