@@ -7,12 +7,14 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequestInterceptor;
 
 import com.example.demo.constant.Method;
 import com.example.demo.domain.BoardDTO;
+import com.example.demo.paging.Criteria;
 import com.example.demo.service.BoardService;
 import com.example.demo.util.UiUtils;
 
@@ -58,8 +60,8 @@ public class BoardController extends UiUtils{
 	}
 	
 	@GetMapping(value = "/board/list.do")
-	public String openBoardList(Model model) {
-		List<BoardDTO> boardList = boardService.getBoardList();
+	public String openBoardList(@ModelAttribute("criteria") Criteria criteria ,Model model) {
+		List<BoardDTO> boardList = boardService.getBoardList(criteria);
 		model.addAttribute("boardList", boardList);
 		
 		return "board/list";

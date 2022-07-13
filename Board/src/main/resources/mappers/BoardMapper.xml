@@ -67,7 +67,7 @@
 			idx = #{idx}
 	</update>
 	
-	<select id="selectBoardList" parameterType="long" resultType="BoardDTO">
+	<select id="selectBoardList" parameterType="Criteria" resultType="BoardDTO">
 		SELECT 
 			<include refid="boardColumns" />
 		FROM
@@ -78,9 +78,11 @@
 			notice_yn asc,
 			idx desc,
 			insert_time desc
+		LIMIT
+			#{startPage}, #{recordsPerPage}
 	</select>
 	
-	<select id="selectBoardTotalCount" parameterType="BoardDTO" resultType="int">
+	<select id="selectBoardTotalCount" parameterType="Criteria" resultType="int">
 		SELECT
 			COUNT(*)
 		FROM

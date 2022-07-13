@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.BoardDTO;
 import com.example.demo.mapper.BoardMapper;
+import com.example.demo.paging.Criteria;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -25,6 +26,7 @@ public class BoardServiceImpl implements BoardService {
 		} else {
 			queryResult = boardMapper.updateBoard(params);
 		}
+		
 	
 		return (queryResult == 1) ? true : false;
 	}
@@ -48,14 +50,14 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<BoardDTO> getBoardList() {
+	public List<BoardDTO> getBoardList(Criteria criteria) {
 		
 		List<BoardDTO> boardList = Collections.emptyList();
 		
-		int boardTotalCount = boardMapper.selectBoardTotalCount();
+		int boardTotalCount = boardMapper.selectBoardTotalCount(criteria);
 		
 		if (boardTotalCount > 0) {
-			boardList = boardMapper.selectBoardList();
+			boardList = boardMapper.selectBoardList(criteria);
 		}
 		
 		return boardList;
