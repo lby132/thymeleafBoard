@@ -67,22 +67,22 @@
 			idx = #{idx}
 	</update>
 	
-	<select id="selectBoardList" parameterType="Criteria" resultType="BoardDTO">
-		SELECT 
+	<select id="selectBoardList" parameterType="BoardDTO" resultType="BoardDTO">
+		SELECT
 			<include refid="boardColumns" />
 		FROM
 			tb_board
 		WHERE
 			delete_yn = 'N'
 		ORDER BY
-			notice_yn asc,
-			idx desc,
-			insert_time desc
+			notice_yn ASC,
+			idx DESC,
+			insert_time DESC
 		LIMIT
-			#{startPage}, #{recordsPerPage}
+			#{paginationInfo.firstRecordIndex}, #{recordsPerPage}
 	</select>
 	
-	<select id="selectBoardTotalCount" parameterType="Criteria" resultType="int">
+	<select id="selectBoardTotalCount" parameterType="BoardDTO" resultType="int">
 		SELECT
 			COUNT(*)
 		FROM

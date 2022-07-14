@@ -13,6 +13,6 @@ public interface BoardService {
 	
 	public boolean deleteBoard(Long idx);
 	
-	public List<BoardDTO> getBoardList(Criteria criteria);
+	public List<BoardDTO> getBoardList(BoardDTO params);
 
 }

@@ -1,5 +1,8 @@
 package com.example.demo.paging;
 
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,6 +30,18 @@ public class Criteria {
 		this.currentPageNo = 1;
 		this.recordsPerPage = 10;
 		this.pageSize = 10;
+	}
+	
+	public String makeQueryString(int pageNo) {
+		UriComponents uriCompnents = UriComponentsBuilder.newInstance()
+				.queryParam("currentPageNo", pageNo)
+				.queryParam("recordsPerpage", recordsPerPage)
+				.queryParam("searchType", searchType)
+				.queryParam("searchKeyword", searchKeyword)
+				.build()
+				.encode();
+		
+		return uriCompnents.toString();
 	}
 	
 	public int getStartPage() {
