@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="board/layout/basic">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="board/layout/basic">
 	<th:block layout:fragment="title">
 		<title>this is list page</title>
 	</th:block>
@@ -38,6 +38,10 @@
 
 			<div class="btn_wrap text-right">
 				<a th:href="@{/board/write.do}" class="btn btn-primary waves-effect waves-light">Write</a>
+			</div>
+			
+			<div class="btn_wrap text-right">
+				<a th:href="@{/board/list.do}" class="btn btn-primary waves-effect waves-light">처음으로</a>
 			</div>
 
 			<th:block layout:fragment="paging">

@@ -66,24 +66,40 @@ public class BoardController extends UiUtils{
 		
 		return "board/list";
 	}
-	
+
 	@GetMapping(value = "/board/view.do")
-	public String openBoardDetail(@RequestParam(value = "idx", required = false) Long idx, Model model) {
+	public String openBoardDetail(@ModelAttribute("params") BoardDTO params, @RequestParam(value = "idx", required = false) Long idx, Model model) {
 		if (idx == null) {
-			model.addAttribute("resultMsg", "올바르지 않은 접근입니다.");
-			return "redirect:/board/list.do";
-		} 
+			return showMessageWithRedirect("올바르지 않은 접근입니다.", "/board/list.do", Method.GET, null, model);
+		}
 		
 		BoardDTO board = boardService.getBoardDetail(idx);
 		if (board == null || "Y".equals(board.getDeleteYn())) {
-			model.addAttribute("result", "없는 게시물이거나 이미 삭제된 게시물 입니다.");
-			return "redirect:/board/list.do";
+			return showMessageWithRedirect("없는 게시글이거나 이미 삭제된 게시글 입니다.", "/board/list.do", Method.GET, null, model);
 		}
 		
 		model.addAttribute("board", board);
 		
 		return "board/view";
 	}
+	
+//	@GetMapping(value = "/board/view.do")
+//	public String openBoardDetail(@RequestParam(value = "idx", required = false) Long idx, Model model) {
+//		if (idx == null) {
+//			model.addAttribute("resultMsg", "올바르지 않은 접근입니다.");
+//			return "redirect:/board/list.do";
+//		} 
+//		
+//		BoardDTO board = boardService.getBoardDetail(idx);
+//		if (board == null || "Y".equals(board.getDeleteYn())) {
+//			model.addAttribute("result", "없는 게시물이거나 이미 삭제된 게시물 입니다.");
+//			return "redirect:/board/list.do";
+//		}
+//		
+//		model.addAttribute("board", board);
+//		
+//		return "board/view";
+//	}
 	
 	@PostMapping(value = "/board/delete.do")
 	public String deleteBoard(@RequestParam(value = "idx", required = false) Long idx, Model model) {

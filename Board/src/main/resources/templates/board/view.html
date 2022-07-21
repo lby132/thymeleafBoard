@@ -91,16 +91,25 @@
 		<script th:inline="javascript">
 			/*<![CDATA[*/
 
-			function deleteBoard(idx) {
-
+			function deleteBoard(idx, queryString) {
+	
 				if (confirm(idx + "번 게시글을 삭제할까요?")) {
 					var uri = /*[[ @{/board/delete.do} ]]*/null;
 					var html = "";
-
+			
 					html += '<form name="dataForm" action="'+uri+'" method="post">';
 					html += '<input type="hidden" name="idx" value="'+idx+'" />';
+			
+					/*[- 쿼리 스트링을 오브젝트 형태로 변환 -]*/
+					queryString = new URLSearchParams(queryString);
+					queryString.forEach(function(value, key) {
+						if (isEmpty(value) == false) {
+							html += '<input type="hidden" name="' + key + '" value="' + value + '" />';
+						}
+					});
+			
 					html += '</form>';
-
+			
 					$("body").append(html);
 					document.dataForm.submit();
 				}
