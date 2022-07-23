@@ -4,7 +4,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.demo.domain.BoardDTO;
-import com.example.demo.paging.Criteria;
 
 @Mapper
 public interface BoardMapper {
