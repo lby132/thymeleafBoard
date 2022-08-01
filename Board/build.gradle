@@ -31,6 +31,8 @@ dependencies {
 	implementation 'mysql:mysql-connector-java:8.0.27'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'commons-io:commons-io:2.11.0' /* Apache Commons IO */
+	implementation 'commons-fileupload:commons-fileupload:1.4' /* Apache Commons File Upload */
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}

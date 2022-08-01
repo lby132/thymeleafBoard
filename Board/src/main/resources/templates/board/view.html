@@ -222,6 +222,7 @@
 				if (!confirm('댓글을 삭제하시겠어요?')) {
 					return false;
 				}
+				// 컴파일에러가 나는데 돌아가는데엔 지장 없다.  /*[[@{/comments/}]]*/ 이렇게 하면 컴파일 에러는 안나지만 삭제처리가 안됨..
 				var uri = [[ @{/comments/} ]] + idx;
 				var headers = {"Content-Type": "application/json", "X-HTTP-Method-Override": "DELETE"};
 			
