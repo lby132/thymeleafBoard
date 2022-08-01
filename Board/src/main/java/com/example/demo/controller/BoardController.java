@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequestInterceptor;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.constant.Method;
 import com.example.demo.domain.BoardDTO;
@@ -46,13 +47,13 @@ public class BoardController extends UiUtils{
 	}
 	
 	@PostMapping(value = "/board/register.do")
-	public String registerBoard(@ModelAttribute("params") final BoardDTO params, Model model) {
+	public String registerBoard(@ModelAttribute("params") final BoardDTO params, final MultipartFile[] files, Model model) {
 		
 		Map<String, Object> pagingParams = getPagingParams(params);
 		
 		try {
-			boolean isRegistered = boardService.registerBoard(params);
-			
+			boolean isRegistered = boardService.registerBoard(params, files);
+
 			if (isRegistered == false) {
 				return showMessageWithRedirect("게시글 등록에 실패하였습니다.", "/board/list.do", Method.GET, pagingParams, model);
 			}

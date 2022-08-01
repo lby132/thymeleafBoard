@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,11 +23,13 @@ import com.example.demo.exception.AttachFileException;
 public class FileUtils {
 
 	/** 오늘 날짜 */
-	private final String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
+	//private final String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
 	
 	/** 업로드 경로 */
-	private final String uploadPath = Paths.get("Users", "iyn", "Downloads", "study", today).toString();
-	
+//	private final String uploadPath = Paths.get("Users", "iyn", "Downloads", "study", "file", today).toString();
+	@Value("${file.dir}")
+	private String uploadPath;
+		
 	/**
 	 * 서버에 생성할 파일명을 처리할 문자열 반환
 	 * @return 랜덤 문자열 
@@ -85,7 +88,7 @@ public class FileUtils {
 				throw new AttachFileException("[" + file.getOriginalFilename() + "] failed to save file...");
 			}
 			
-			return attachList;
 		}
+		return attachList;
 	}
 }
