@@ -11,7 +11,7 @@ public interface BoardService {
 	
 	public boolean registerBoard(BoardDTO params);
 	
-	public boolean registerBoard(BoardDTO params, MultipartFile[] file);
+	public boolean registerBoard(BoardDTO params, MultipartFile[] files);
 	
 	public BoardDTO getBoardDetail(Long idx);
 	
