@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import java.util.List;
 
 public class BoardDTO extends CommonDTO{
 
@@ -23,6 +24,12 @@ public class BoardDTO extends CommonDTO{
 
 	/** 비밀 여부 */
 	private String secretYn;
+	
+	/** 비밀 변경 여부 */
+	private String changeYn;
+	
+	/** 파일 인덱스 리스트 */
+	private List<Long> fileIdxs;
 
 	public Long getIdx() {
 		return idx;
@@ -78,6 +85,22 @@ public class BoardDTO extends CommonDTO{
 
 	public void setSecretYn(String secretYn) {
 		this.secretYn = secretYn;
+	}
+
+	public String getChangeYn() {
+		return changeYn;
+	}
+
+	public void setChangeYn(String changeYn) {
+		this.changeYn = changeYn;
+	}
+
+	public List<Long> getFileIdxs() {
+		return fileIdxs;
+	}
+
+	public void setFileIdxs(List<Long> fileIdxs) {
+		this.fileIdxs = fileIdxs;
 	}
 	
 	

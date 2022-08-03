@@ -101,4 +101,14 @@ public class BoardServiceImpl implements BoardService {
 		return boardList;
 	}
 
+	@Override
+	public List<AttachDTO> getAttachFileList(Long boardIdx) {
+		
+		int fileTotalCount = attachMapper.selectAttachTotalCount(boardIdx);
+		if (fileTotalCount < 1) {
+			return Collections.emptyList();
+		}
+		return attachMapper.selectAttachList(boardIdx);
+	}
+
 }

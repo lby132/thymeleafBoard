@@ -15,6 +15,7 @@ import org.springframework.web.context.request.WebRequestInterceptor;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.constant.Method;
+import com.example.demo.domain.AttachDTO;
 import com.example.demo.domain.BoardDTO;
 import com.example.demo.paging.Criteria;
 import com.example.demo.service.BoardService;
@@ -41,6 +42,9 @@ public class BoardController extends UiUtils{
 				return showMessageWithRedirect("없는 게시글이거나 이미 삭제된 게시글입니다.", "/board/list.do", Method.GET, null, model);
 			}
 			model.addAttribute("board", board);
+			
+			List<AttachDTO> fileList = boardService.getAttachFileList(idx);
+			model.addAttribute("fileList", fileList);
 		}
 
 		return "board/write";
