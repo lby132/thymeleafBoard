@@ -1,9 +1,18 @@
 package com.example.demo.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.file.Paths;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,13 +20,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequestInterceptor;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.constant.Method;
 import com.example.demo.domain.AttachDTO;
 import com.example.demo.domain.BoardDTO;
-import com.example.demo.paging.Criteria;
 import com.example.demo.service.BoardService;
 import com.example.demo.util.UiUtils;
 
@@ -30,6 +37,9 @@ public class BoardController extends UiUtils{
 
 	@Autowired
 	private BoardService boardService;
+	
+	@Value("${file.dir}")
+	private String uploadFilePath;
 
 
 	@GetMapping(value = "/board/write.do")
@@ -66,7 +76,9 @@ public class BoardController extends UiUtils{
 			
 			return showMessageWithRedirect("데이터베이스 처리 과정에 문제가 발생하였습니다.", "/board/list.do", Method.GET, pagingParams, model);
 
-		} 
+		} catch (Exception e) {
+			return showMessageWithRedirect("시스템에 문제가 발생하였습니다.", "/board/list.do", Method.GET, pagingParams, model);
+		}
 
 		return showMessageWithRedirect("게시글 등록이 완료되었습니다.", "/board/list.do", Method.GET, pagingParams, model);
 	}
@@ -92,7 +104,45 @@ public class BoardController extends UiUtils{
 		
 		model.addAttribute("board", board);
 		
+		List<AttachDTO> fileList = boardService.getAttachFileList(idx); 
+		model.addAttribute("fileList", fileList);
+		
 		return "board/view";
+	}
+	
+	@GetMapping("/board/download.do")
+	public void downloadAttachFile(@RequestParam(value = "idx", required = false) final Long idx, Model model, HttpServletResponse response) {
+		
+		if (idx == null) throw new RuntimeException("올바르지 않은 접근입니다.");
+		
+		AttachDTO fileInfo = boardService.getAttachDetail(idx);
+		if (fileInfo == null || "Y".equals(fileInfo.getDeleteYn())) {
+			throw new RuntimeException("파일 정보를 찾을 수 없습니다.");
+		}
+		
+//		String uploadDate = fileInfo.getInsertTime().format(DateTimeFormatter.ofPattern("yyMMdd"));
+//		String uploadPath = Paths.get("C:", "develop", "upload", uploadDate).toString();
+//		String uploadPath = Paths.get(uploadFilePath, uploadDate).toString();
+		String uploadPath = uploadFilePath;
+		String filename = fileInfo.getOriginalName();
+		File file = new File(uploadPath, fileInfo.getSaveName());
+		
+		try {
+			byte[] data = FileUtils.readFileToByteArray(file);
+			response.setContentType("application/octet-stream");
+			response.setContentLength(data.length);
+			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(filename, "UTF-8") + "\";");
+			
+			response.getOutputStream().write(data);
+			response.getOutputStream().flush();
+			response.getOutputStream().close();
+		} catch (IOException e) {
+			throw new RuntimeException("파일 다운로드에 실패하였습니다.");
+		} catch (Exception e) {
+			throw new RuntimeException("시스템에 문제가 발생하였습니다.");
+		}
+		
 	}
 	
 //	@GetMapping(value = "/board/view.do")
@@ -134,6 +184,5 @@ public class BoardController extends UiUtils{
 		return showMessageWithRedirect("게시글 삭제가 완료되었습니다.", "/board/list.do", Method.GET, pagingParams, model);
 	}
 	
-
 	
 }

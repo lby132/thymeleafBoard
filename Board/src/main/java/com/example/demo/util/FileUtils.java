@@ -26,9 +26,11 @@ public class FileUtils {
 	//private final String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
 	
 	/** 업로드 경로 */
-//	private final String uploadPath = Paths.get("Users", "iyn", "Downloads", "study", "file", today).toString();
+	//private final String uploadPath = Paths.get(uploadFilePath, today).toString();
+	
+	/** 업로드 경로 */
 	@Value("${file.dir}")
-	private String uploadPath;
+	private String uploadFilePath;
 		
 	/**
 	 * 서버에 생성할 파일명을 처리할 문자열 반환
@@ -51,7 +53,7 @@ public class FileUtils {
 		List<AttachDTO> attachList = new ArrayList<>();
 		
 		/* uploadPath에 해당하는 디렉터리가 존재하지 않으면, 부모 디렉터리를 포함한 모든 디렉터리를 생성 */
-		File dir = new File(uploadPath);
+		File dir = new File(uploadFilePath);
 		if (dir.exists() == false) {
 			dir.mkdirs();
 		}
@@ -67,9 +69,8 @@ public class FileUtils {
 				
 				/* 서버에 저장할 파일명 (랜덤 문자열 + 확장자) */
 				final String saveName = getRandomString() + "." + extension;
-				System.out.println("saveName = " + saveName);
 				/* 업로드 경로에 saveName과 동일한 이름을 가진 파일 생성 */
-				File target = new File(uploadPath, saveName);
+				File target = new File(uploadFilePath, saveName);
 				file.transferTo(target);
 				
 				/* 파일 정보 저장 */

@@ -63,6 +63,17 @@
 			board_idx = #{boardIdx}
 	</select>
 	
+	<select id="selectAttachTotalCount" parameterType="long" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			tb_attach
+		WHERE
+			delete_yn = 'N'
+		AND
+			board_idx = #{boardIdx}
+	</select>
+	
 	<update id="undeleteAttach" parameterType="list">
 		UPDATE	tb_attach 
 		SET

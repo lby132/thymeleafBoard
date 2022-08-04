@@ -103,9 +103,4 @@ public class BoardDTO extends CommonDTO{
 		this.fileIdxs = fileIdxs;
 	}
 	
-	
-	
-	
-	
-	
 }

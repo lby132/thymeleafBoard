@@ -1,6 +1,6 @@
 package com.example.demo.domain;
 
-public class AttachDTO {
+public class AttachDTO extends CommonDTO {
 	
 	/** 파일 번호 (PK) */
 	private Long idx;
